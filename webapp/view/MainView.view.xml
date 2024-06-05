@@ -1,26 +1,47 @@
 <mvc:View xmlns:core="sap.ui.core" controllerName="poccsnov.controller.MainView"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m" xmlns:t="sap.ui.table">
     <Page id="page" title="{i18n>title}" showHeader="false">
         <content>
             <VBox id="main-page-box" class="sapUiSmallMargin">
-
                 <Label id="label-tipologia" text="Tipologia riferimento" design="Bold" />
-                <Select id="select-tipologia" forceSelection="false" class="sapUiSmallMarginBottom" change="onSelectChange" >
+                <Select id="select-tipologia" forceSelection="false" class="sapUiSmallMarginBottom" change="onSelectChange">
                     <items>
                         <core:Item id="select-item-doc" text="Doc. di spedizione" />
                         <core:Item id="select-item-doc-lotto" text="Doc. di spedizione - Lotto" />
                         <core:Item id="select-item-doc-prodotto" text="Doc. di spedizione - Prodotto" />
                         <core:Item id="select-item-lotto" text="Lotto" />
                         <core:Item id="select-item-ordine" text="Ordine di vendita" />
-                        <core:Item id="select-item-prodotto" text="Prodotto" />
+                        <core:Item id="select-item-prodotto" text="Prodotto" /> 
                     </items>
                 </Select>
                 
                 <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Filtri" visible="false">
                     <content>
+                        <HBox id="filtri-hbox-ext">
+                            <HBox id="filtri-hbox-int" width="50%" justifyContent="SpaceBetween">
+                                <VBox id="filtri-vbox-1">
+                                    <Label id="filtri-label-n-odv" text="N. OdV" />
+                                    <Input id="filtri-input-n-odv" maxLength="10" />
+                                </VBox>
+                                <VBox id="filtri-vbox-2">
+                                    <Label id="filtri-label-n-oda" text="N. OdA Cliente" />
+                                    <Input id="filtri-input-n-oda" maxLength="10" />
+                                </VBox>
+                                <VBox id="filtri-vbox-3" width="40%">
+                                    <Label id="filtri-label-data" text="Data OdV" />
+                                    <DateRangeSelection id="filtri-date" placeholder=" "/>
+                                </VBox>
+                            </HBox>
+                            <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginBegin">
+                                <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" enabled="false" />
+                            </VBox>
+                        </HBox>
                     </content>
                 </Panel>
+                <t:Table id="table-odv">
+                
+                </t:Table>
             </VBox>
         </content>
     </Page>
