@@ -16,7 +16,7 @@ function (Controller, JSONModel, DateFormat) {
                             'number': '1030065784',
                             'date': oDateFormat.format(new Date('2023-09-19T00:00:00.000Z')),
                             'customerNumber': '4500112408',
-                            'price': '1000.00',
+                            'price': '65.500',
                             'status': 'C' 
                         }
                     ]
