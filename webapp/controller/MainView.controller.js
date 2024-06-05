@@ -7,6 +7,15 @@ function (Controller) {
     return Controller.extend("poccsnov.controller.MainView", {
         onInit: function () {
 
+        },
+
+        onSelectChange: function (oEvent) {
+            const oPanel = this.getView().byId("panel-filtri");
+
+            if (oEvent.getParameter("selectedItem").getProperty("text") == 'Ordine di vendita')
+                oPanel.setVisible(true);
+            else 
+                oPanel.setVisible(false);
         }
     });
 });

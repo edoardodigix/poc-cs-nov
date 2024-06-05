@@ -4,8 +4,9 @@
     <Page id="page" title="{i18n>title}" showHeader="false">
         <content>
             <VBox id="main-page-box" class="sapUiSmallMargin">
+
                 <Label id="label-tipologia" text="Tipologia riferimento" design="Bold" />
-                <Select id="select-tipologia" forceSelection="false">
+                <Select id="select-tipologia" forceSelection="false" class="sapUiSmallMarginBottom" change="onSelectChange" >
                     <items>
                         <core:Item id="select-item-doc" text="Doc. di spedizione" />
                         <core:Item id="select-item-doc-lotto" text="Doc. di spedizione - Lotto" />
@@ -15,6 +16,11 @@
                         <core:Item id="select-item-prodotto" text="Prodotto" />
                     </items>
                 </Select>
+                
+                <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Filtri" visible="false">
+                    <content>
+                    </content>
+                </Panel>
             </VBox>
         </content>
     </Page>
