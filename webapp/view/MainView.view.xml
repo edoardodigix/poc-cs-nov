@@ -31,7 +31,7 @@
                                 </VBox>
                                 <VBox id="filtri-vbox-3" width="40%">
                                     <Label id="filtri-label-data" text="Data OdV" />
-                                    <DateRangeSelection id="filtri-date" placeholder=" "/>
+                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onDateChange"/>
                                 </VBox>
                             </HBox>
                             <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginBegin">
@@ -41,7 +41,7 @@
                     </content>
                 </Panel>
                 <VBox id="table-odv-vbox" visible="false">
-                    <t:Table id="table-odv" visible="true" rows="{/data}" class="sapUiSmallMarginBottom">
+                    <t:Table id="table-odv" visible="true" rows="{/data}" class="sapUiSmallMarginBottom" enableCellFilter="{ui>/cellFilterOn}">
                         <t:rowMode>
                             <rowmodes:Fixed id="table-odv-row-mode"></rowmodes:Fixed>
                         </t:rowMode>
