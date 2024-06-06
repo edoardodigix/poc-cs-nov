@@ -75,6 +75,9 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             this.getView().byId("filtri-date").setSecondDateValue(null);
 
             this.getView().byId("table-odv-vbox").setVisible(false);
+            this.getView().byId("panel-riferimenti").setVisible(false);
+            this.getView().byId("filtri-btn").setEnabled(true);
+
         },
 
         onSelectRow: function(oEvent) {
