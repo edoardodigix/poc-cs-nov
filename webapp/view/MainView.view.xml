@@ -31,11 +31,11 @@
                                 </VBox>
                                 <VBox id="filtri-vbox-3" width="40%">
                                     <Label id="filtri-label-data" text="Data OdV" />
-                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onDateChange"/>
+                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" />
                                 </VBox>
                             </HBox>
                             <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginBegin">
-                                <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" enabled="false" />
+                                <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" press="onCerca"/>
                             </VBox>
                         </HBox>
                     </content>
@@ -79,7 +79,7 @@
                         </t:columns>
                     </t:Table>
                     <HBox id="hbox-table-odv-btn" justifyContent="End">
-                        <Button id="table-odv-btn-reset" text="Reset" class="sapUiSmallMarginEnd" width="5rem" />
+                        <Button id="table-odv-btn-reset" text="Reset" class="sapUiSmallMarginEnd" width="5rem" press="onReset" />
                         <Button id="table-odv-btn-seleziona" text="Seleziona" width="5rem" type="Emphasized" enabled="false" press="onSelectButtonPress"/>
                     </HBox>
                 </VBox>

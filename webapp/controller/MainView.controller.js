@@ -2,10 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/format/DateFormat",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/m/MessageBox"
 ],
-function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
+function (Controller, JSONModel, DateFormat, MessageBox) {
     "use strict";
 
     const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true});
@@ -59,14 +58,23 @@ function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
 
             if (oEvent.getParameter("selectedItem").getProperty("text") == 'Ordine di vendita') {
                 oPanel.setVisible(true);
-                oTable.setVisible(true);
                 this.getView().byId("table-odv").clearSelection();
             }
             else { 
                 oPanel.setVisible(false);
                 oTable.setVisible(false);
                 this.getView().byId("panel-riferimenti").setVisible(false);
+                this.getView().byId("filtri-btn").setEnabled(true);
             }
+        },
+
+        onReset: function () {
+            this.getView().byId("filtri-input-n-odv").setValue('');
+            this.getView().byId("filtri-input-n-oda").setValue('');
+            this.getView().byId("filtri-date").setDateValue(null);
+            this.getView().byId("filtri-date").setSecondDateValue(null);
+
+            this.getView().byId("table-odv-vbox").setVisible(false);
         },
 
         onSelectRow: function(oEvent) {
@@ -96,11 +104,13 @@ function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
                 newData = {};
             });
 
-            sampleData.selectedData = selectedData;
-            this.getView().getModel().setData(sampleData);
+            // sampleData.selectedData = selectedData;
+            const beforeData = this.getView().getModel().getData().data;
+            this.getView().getModel().setData({'data': beforeData, 'selectedData': selectedData});
 
             this.getView().byId("table-riferimenti-row-mode").setRowCount(selectedData.length);
             this.getView().byId("panel-riferimenti").setVisible(true);
+            this.getView().byId("filtri-btn").setEnabled(false);
 
         },
 
@@ -114,36 +124,60 @@ function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
                 newData.splice(i, 1);
             }
             sampleData.selectedData = newData;
-            oModel.setData(sampleData);
+            const beforeData = this.getView().getModel().getData().selectedData;
+            this.getView().getModel().setData({'data': initialData.data, 'selectedData': beforeData});
             this.getView().byId("table-riferimenti-row-mode").setRowCount(newData.length);
             if (newData.length === 0)
                 this.getView().byId("panel-riferimenti").setVisible(false);
+                this.getView().byId("filtri-btn").setEnabled(true);
         },
 
-        onDateChange: function (oEvent) {
-            // let sFrom = oEvent.getParameter("from").toJSON().split('T')[0];
-            // let sTo = oEvent.getParameter("to").toJSON().split('T')[0];
-            // this._oGlobalFilter = null;
-
-            // console.log("STOP");
-
-            // if (sFrom && sTo) {
-            //     this._oGlobalFilter= new Filter({path: "date", operator: FilterOperator.BT, value1: sFrom, value2: sTo});
-            // }
-
-            // this._filter();
-        },
-
-        // FILTERS UTILITY FUNCTIONS
-
-        _filter: function() {
-            // let oFilter = null;
-
-            // if (this._oGlobalFilter) {
-            //     oFilter = this._oGlobalFilter;
-            // }
-
-            // this.byId("table-odv").getBinding().filter(oFilter, "Application")
-        },
+        onCerca: function() {
+            const aFilters = {
+                'number': this.getView().byId("filtri-input-n-odv").getProperty('value'),
+                'customerNumber': this.getView().byId("filtri-input-n-oda").getProperty('value'),
+                'date1': this.getView().byId("filtri-date").getProperty("dateValue"),
+                'date2': this.getView().byId("filtri-date").getProperty("secondDateValue")
+            };
+            console.log("SS")
+            if (aFilters.number.length == 0 && aFilters.customerNumber.length == 0 && aFilters.date1 == null && aFilters.date2 == null) {
+                MessageBox.warning("Popola almeno un filtro!");
+                return;
+            }
+            const initialData = sampleData.data;
+            let myDate;
+            let newData = [];
+            let numberFilteredData, customerNumberFilteredData, dateFilteredData;
+            if (!aFilters.number == false)
+                numberFilteredData = initialData.filter((row) => row.number == aFilters.number);
+            if (!aFilters.customerNumber == false)
+                customerNumberFilteredData = initialData.filter((row) => row.customerNumber == aFilters.customerNumber);
+            if (!aFilters.date1 == false) {
+                dateFilteredData = initialData.filter((row) => {
+                    myDate = (new Date(row.date.split('/')[2]+'-'+row.date.split('/')[1]+'-'+row.date.split('/')[0])).getTime();
+                    return aFilters.date1.getTime() <= myDate && myDate <= aFilters.date2.getTime();
+                });
+            }
+            if (!numberFilteredData == false && !customerNumberFilteredData == false && !dateFilteredData == false)
+                newData = numberFilteredData.filter((row) => customerNumberFilteredData.includes(row) && dateFilteredData.includes(row));
+            else if (!numberFilteredData == false && !customerNumberFilteredData == false)
+                newData = numberFilteredData.filter((row) => customerNumberFilteredData.includes(row));
+            else if (!numberFilteredData == false && !dateFilteredData == false)
+                newData = numberFilteredData.filter((row) => dateFilteredData.includes(row));
+            else if (!customerNumberFilteredData == false && !dateFilteredData == false)
+                newData = customerNumberFilteredData.filter((row) => dateFilteredData.includes(row));
+            else if (!numberFilteredData == false)
+                newData = numberFilteredData;
+            else if (!customerNumberFilteredData == false)
+                newData = customerNumberFilteredData;
+            else if (!dateFilteredData == false)
+                newData = dateFilteredData;
+            else
+                newData = sampleData.data;
+            this.getView().getModel().setData({'data': newData});
+            this.getView().byId("table-odv-vbox").setVisible(true);
+            this.getView().byId("table-odv").clearSelection();
+            this.getView().byId("table-odv-row-mode").setRowCount(newData.length || 1);
+        }
     });
 });
