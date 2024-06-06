@@ -40,8 +40,8 @@
                         </HBox>
                     </content>
                 </Panel>
-                <VBox id="table-odv-vbox" visible="false">
-                    <t:Table id="table-odv" visible="true" rows="{/data}" class="sapUiSmallMarginBottom" enableCellFilter="{ui>/cellFilterOn}">
+                <VBox id="table-odv-vbox" visible="false" class="sapUiSmallMarginBottom">
+                    <t:Table id="table-odv" rows="{/data}" class="sapUiSmallMarginBottom" rowSelectionChange="onSelectRow">
                         <t:rowMode>
                             <rowmodes:Fixed id="table-odv-row-mode"></rowmodes:Fixed>
                         </t:rowMode>
@@ -80,9 +80,64 @@
                     </t:Table>
                     <HBox id="hbox-table-odv-btn" justifyContent="End">
                         <Button id="table-odv-btn-reset" text="Reset" class="sapUiSmallMarginEnd" width="5rem" />
-                        <Button id="table-odv-btn-seleziona" text="Seleziona" width="5rem" type="Emphasized" enabled="false"/>
+                        <Button id="table-odv-btn-seleziona" text="Seleziona" width="5rem" type="Emphasized" enabled="false" press="onSelectButtonPress"/>
                     </HBox>
                 </VBox>
+                <Panel id="panel-riferimenti" expandable="true" expanded="true" headerText="Riferimenti" visible="false">
+                    <content>
+                        <t:Table id="table-riferimenti" rows="{/selectedData}" selectionMode="None" class="sapUiMediumMarginBottom">
+                            <t:rowMode>
+                                <rowmodes:Fixed id="table-riferimenti-row-mode"></rowmodes:Fixed>
+                            </t:rowMode>
+                            <t:columns>
+                                <t:Column id="table-riferimenti-number">
+                                    <Label id="table-riferimenti-number-label" text="N. OdV" />
+                                    <t:template>
+                                        <Text id="table-riferimenti-number-text" text="{number}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-date">
+                                    <Label id="table-riferimenti-date-label" text="Date OdV" />
+                                    <t:template>
+                                        <Text id="table-riferimenti-date-text" text="{date}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-customernumber">
+                                    <Label id="table-riferimenti-customernumber-label" text="N. OdA Cliente" />
+                                    <t:template>
+                                        <Text id="table-riferimenti-customernumber-text" text="{customerNumber}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-price">
+                                    <Label id="table-riferimenti-price-label" text="Valore" />
+                                    <t:template>
+                                        <Text id="table-riferimenti-price-text" text="{price}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-status">
+                                    <Label id="table-riferimenti-status-label" text="Stato" />
+                                    <t:template>
+                                        <Text id="table-riferimenti-status-text" text="{status}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-btn-delete" width="4rem" hAlign="Center">
+                                    <t:template>
+                                        <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" type="Reject" press="onDeleteRiferimentiPress"/>
+                                    </t:template>
+                                </t:Column>
+                                <t:Column id="table-riferimenti-btn-pdf" width="6rem" hAlign="Center">
+                                    <t:template>
+                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" text= "PDF" type="Default"/>
+                                    </t:template>
+                                </t:Column>
+                            </t:columns>
+                        </t:Table>
+                        <VBox id="vbox-note">
+                            <Label id="label-note" text="Note" design="Bold"/>
+                            <TextArea id="text-area-note" ariaLabelledBy="label-note" width="35%" height="8rem" />
+                        </VBox>
+                    </content>
+                </Panel>
             </VBox>
         </content>
     </Page>

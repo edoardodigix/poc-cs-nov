@@ -8,46 +8,48 @@ sap.ui.define([
 function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
     "use strict";
 
+    const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true});
+
+    const sampleData = {
+        'data': 
+            [
+                {
+                    'number': '1030065784',
+                    'date': oDateFormat.format(new Date('2023-09-19T00:00:00.000Z')),
+                    'customerNumber': '4500112408',
+                    'price': '65.500',
+                    'status': 'C' 
+                },
+                {
+                    'number': '1030063114',
+                    'date': oDateFormat.format(new Date('2023-04-18T00:00:00.000Z')),
+                    'customerNumber': '4500117678',
+                    'price': '80.000',
+                    'status': 'C' 
+                },
+                {
+                    'number': '1030066144',
+                    'date': oDateFormat.format(new Date('2023-10-06T00:00:00.000Z')),
+                    'customerNumber': '4500110017',
+                    'price': '74.414',
+                    'status': 'C' 
+                },
+                {
+                    'number': '1030066277',
+                    'date': oDateFormat.format(new Date('2023-10-12T00:00:00.000Z')),
+                    'customerNumber': '4500110263',
+                    'price': '73.476',
+                    'status': 'C' 
+                }
+            ]
+    };
+
     return Controller.extend("poccsnov.controller.MainView", {
+        
         onInit: function () {
-            const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true});
-            const sampleData = {
-                'data': 
-                    [
-                        {
-                            'number': '1030065784',
-                            'date': oDateFormat.format(new Date('2023-09-19T00:00:00.000Z')),
-                            'customerNumber': '4500112408',
-                            'price': '65.500',
-                            'status': 'C' 
-                        },
-                        {
-                            'number': '1030063114',
-                            'date': oDateFormat.format(new Date('2023-04-18T00:00:00.000Z')),
-                            'customerNumber': '4500117678',
-                            'price': '80.000',
-                            'status': 'C' 
-                        },
-                        {
-                            'number': '1030066144',
-                            'date': oDateFormat.format(new Date('2023-10-06T00:00:00.000Z')),
-                            'customerNumber': '4500110017',
-                            'price': '74.414',
-                            'status': 'C' 
-                        },
-                        {
-                            'number': '1030066277',
-                            'date': oDateFormat.format(new Date('2023-10-12T00:00:00.000Z')),
-                            'customerNumber': '4500110263',
-                            'price': '73.476',
-                            'status': 'C' 
-                        }
-                    ]
-            };
             const oJSONModel = new JSONModel(sampleData);
 
             this.getView().byId("table-odv-row-mode").setRowCount(oJSONModel.getData().data.length);
-
             this.getView().setModel(oJSONModel);
         },
 
@@ -58,11 +60,64 @@ function (Controller, JSONModel, DateFormat, Filter, FilterOperator) {
             if (oEvent.getParameter("selectedItem").getProperty("text") == 'Ordine di vendita') {
                 oPanel.setVisible(true);
                 oTable.setVisible(true);
+                this.getView().byId("table-odv").clearSelection();
             }
             else { 
                 oPanel.setVisible(false);
                 oTable.setVisible(false);
+                this.getView().byId("panel-riferimenti").setVisible(false);
             }
+        },
+
+        onSelectRow: function(oEvent) {
+            const aIndices = oEvent.getSource().getSelectedIndices();
+            const oSelectButton = this.getView().byId("table-odv-btn-seleziona");
+            if (aIndices.length > 0)
+                oSelectButton.setEnabled(true);
+            else
+            oSelectButton.setEnabled(false);
+        },
+
+        onSelectButtonPress: function() {
+            const aRows = this.getView().byId("table-odv").getRows();
+            let selectedData = [];
+            let newRowCells;
+            let newData = {};
+            const aIndices = this.getView().byId("table-odv").getSelectedIndices();
+
+            aIndices.forEach((index) => {
+                newRowCells = aRows.at(index).getCells();
+                newData.number = newRowCells[0].getProperty("text");
+                newData.date = newRowCells[1].getProperty("text");
+                newData.customerNumber = newRowCells[2].getProperty("text");
+                newData.price = newRowCells[3].getProperty("text");
+                newData.status = newRowCells[4].getProperty("text");
+                selectedData.push(newData);
+                newData = {};
+            });
+
+            sampleData.selectedData = selectedData;
+            this.getView().getModel().setData(sampleData);
+
+            this.getView().byId("table-riferimenti-row-mode").setRowCount(selectedData.length);
+            this.getView().byId("panel-riferimenti").setVisible(true);
+
+        },
+
+        onDeleteRiferimentiPress: function(oEvent) {
+            const oModel = this.getView().getModel();
+            const initialData = oModel.getData();
+            let newData = initialData.selectedData;
+            const rowToRemove = oEvent.getSource().getParent().getCells()[0].getProperty("text");
+            for (let i = 0; i < newData.length; ++i) {
+                if (initialData.selectedData[i].number === rowToRemove)
+                newData.splice(i, 1);
+            }
+            sampleData.selectedData = newData;
+            oModel.setData(sampleData);
+            this.getView().byId("table-riferimenti-row-mode").setRowCount(newData.length);
+            if (newData.length === 0)
+                this.getView().byId("panel-riferimenti").setVisible(false);
         },
 
         onDateChange: function (oEvent) {
