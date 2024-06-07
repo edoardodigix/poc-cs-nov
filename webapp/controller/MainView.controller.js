@@ -130,9 +130,10 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             const beforeData = this.getView().getModel().getData().selectedData;
             this.getView().getModel().setData({'data': initialData.data, 'selectedData': beforeData});
             this.getView().byId("table-riferimenti-row-mode").setRowCount(newData.length);
-            if (newData.length === 0)
+            if (newData.length === 0) {
                 this.getView().byId("panel-riferimenti").setVisible(false);
                 this.getView().byId("filtri-btn").setEnabled(true);
+            }
         },
 
         onCerca: function() {
