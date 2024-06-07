@@ -145,7 +145,7 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             };
             console.log("SS")
             if (aFilters.number.length == 0 && aFilters.customerNumber.length == 0 && aFilters.date1 == null && aFilters.date2 == null) {
-                MessageBox.warning("Popola almeno un filtro!");
+                MessageBox.warning("Popola almeno un filtro!", {title: "Attenzione"});
                 return;
             }
             const initialData = sampleData.data;
