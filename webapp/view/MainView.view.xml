@@ -20,22 +20,22 @@
                 <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Filtri" visible="false" class="sapUiSmallMarginBottom">
                     <content>
                         <HBox id="filtri-hbox-ext">
-                            <HBox id="filtri-hbox-int" width="50%" justifyContent="SpaceBetween">
-                                <VBox id="filtri-vbox-1">
+                            <HBox id="filtri-hbox-int" width="65%" justifyContent="Start">
+                                <VBox id="filtri-vbox-1" class="sapUiLargeMarginEnd">
                                     <Label id="filtri-label-n-odv" text="N. OdV" />
-                                    <Input id="filtri-input-n-odv" maxLength="10" />
+                                    <Input id="filtri-input-n-odv" maxLength="10" liveChange="onInputChange" />
                                 </VBox>
-                                <VBox id="filtri-vbox-2">
+                                <VBox id="filtri-vbox-2" class="sapUiLargeMarginEnd">
                                     <Label id="filtri-label-n-oda" text="N. OdA Cliente" />
-                                    <Input id="filtri-input-n-oda" maxLength="10" />
+                                    <Input id="filtri-input-n-oda" maxLength="10" liveChange="onInputChange" />
                                 </VBox>
-                                <VBox id="filtri-vbox-3" width="40%">
+                                <VBox id="filtri-vbox-3" class="sapUiLargeMarginEnd" width="17rem">
                                     <Label id="filtri-label-data" text="Data OdV" />
-                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" />
+                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onInputChange" />
                                 </VBox>
                             </HBox>
-                            <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginBegin">
-                                <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" press="onCerca"/>
+                            <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginEnd">
+                                <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" press="onCerca" enabled="false"/>
                             </VBox>
                         </HBox>
                     </content>
@@ -122,19 +122,19 @@
                                 </t:Column>
                                 <t:Column id="table-riferimenti-btn-delete" width="4rem" hAlign="Center">
                                     <t:template>
-                                        <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" type="Reject" press="onDeleteRiferimentiPress"/>
+                                        <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" press="onDeleteRiferimentiPress"/>
                                     </t:template>
                                 </t:Column>
                                 <t:Column id="table-riferimenti-btn-pdf" width="6rem" hAlign="Center">
                                     <t:template>
-                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" text= "PDF" type="Default"/>
+                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" text= "PDF" type="Default" press="onOpenPdf"/>
                                     </t:template>
                                 </t:Column>
                             </t:columns>
                         </t:Table>
                         <VBox id="vbox-note">
                             <Label id="label-note" text="Note" design="Bold"/>
-                            <TextArea id="text-area-note" ariaLabelledBy="label-note" width="35%" height="8rem" />
+                            <TextArea id="text-area-note" ariaLabelledBy="label-note" width="100%" height="8rem" />
                         </VBox>
                     </content>
                 </Panel>

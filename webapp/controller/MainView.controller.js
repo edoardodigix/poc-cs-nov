@@ -1,10 +1,9 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
-    "sap/ui/core/format/DateFormat",
-    "sap/m/MessageBox"
+    "sap/ui/core/format/DateFormat"
 ],
-function (Controller, JSONModel, DateFormat, MessageBox) {
+function (Controller, JSONModel, DateFormat) {
     "use strict";
 
     const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true});
@@ -16,31 +15,32 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
                     'number': '1030065784',
                     'date': oDateFormat.format(new Date('2023-09-19T00:00:00.000Z')),
                     'customerNumber': '4500112408',
-                    'price': '65.500',
-                    'status': 'C' 
+                    'price': '65.500 €',
+                    'status': 'Concluso' 
                 },
                 {
                     'number': '1030063114',
                     'date': oDateFormat.format(new Date('2023-04-18T00:00:00.000Z')),
                     'customerNumber': '4500117678',
-                    'price': '80.000',
-                    'status': 'C' 
+                    'price': '80.000 €',
+                    'status': 'Concluso' 
                 },
                 {
                     'number': '1030066144',
                     'date': oDateFormat.format(new Date('2023-10-06T00:00:00.000Z')),
                     'customerNumber': '4500110017',
-                    'price': '74.414',
-                    'status': 'C' 
+                    'price': '74.414 €',
+                    'status': 'Concluso' 
                 },
                 {
                     'number': '1030066277',
                     'date': oDateFormat.format(new Date('2023-10-12T00:00:00.000Z')),
                     'customerNumber': '4500110263',
-                    'price': '73.476',
-                    'status': 'C' 
+                    'price': '73.476 €',
+                    'status': 'Concluso' 
                 }
-            ]
+            ],
+        'selectedData': []
     };
 
     return Controller.extend("poccsnov.controller.MainView", {
@@ -68,6 +68,16 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             }
         },
 
+        onOpenPdf: function () {
+            const pdfViewer = new sap.m.PDFViewer();
+            this.getView().addDependent(pdfViewer);
+
+            const sSource ="./res/sample-document.pdf";
+            pdfViewer.setSource(sSource);
+            pdfViewer.setTitle("My Custom Title");
+            pdfViewer.open();
+        },
+
         onReset: function () {
             this.getView().byId("filtri-input-n-odv").setValue('');
             this.getView().byId("filtri-input-n-oda").setValue('');
@@ -75,7 +85,6 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             this.getView().byId("filtri-date").setSecondDateValue(null);
 
             this.getView().byId("table-odv-vbox").setVisible(false);
-            this.getView().byId("panel-riferimenti").setVisible(false);
             this.getView().byId("filtri-btn").setEnabled(true);
 
         },
@@ -91,7 +100,7 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
 
         onSelectButtonPress: function() {
             const aRows = this.getView().byId("table-odv").getRows();
-            let selectedData = [];
+            let selectedData = this.getView().getModel().getData().selectedData;
             let newRowCells;
             let newData = {};
             const aIndices = this.getView().byId("table-odv").getSelectedIndices();
@@ -103,7 +112,19 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
                 newData.customerNumber = newRowCells[2].getProperty("text");
                 newData.price = newRowCells[3].getProperty("text");
                 newData.status = newRowCells[4].getProperty("text");
-                selectedData.push(newData);
+
+                // Check se il dato è già presente tra i selectedData
+                if (selectedData.length == 0)
+                    selectedData.push(newData);
+                else {
+                    let count = 0;
+                    selectedData.forEach((data) => {
+                        if (newData.number != data.number)
+                            ++count;
+                    });
+                    if (count == selectedData.length)
+                        selectedData.push(newData);
+                }
                 newData = {};
             });
 
@@ -113,8 +134,19 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
 
             this.getView().byId("table-riferimenti-row-mode").setRowCount(selectedData.length);
             this.getView().byId("panel-riferimenti").setVisible(true);
-            this.getView().byId("filtri-btn").setEnabled(false);
+            this.getView().byId("select-tipologia").setEnabled(false);
 
+        },
+
+        onInputChange: function () {
+            const input1 = this.getView().byId("filtri-input-n-odv");
+            const input2 = this.getView().byId("filtri-input-n-oda");
+            const inputData = this.getView().byId("filtri-date");
+            const btn = this.getView().byId("filtri-btn");
+            if (input1.getValue() == '' && input2.getValue() == '' && inputData.getDateValue() == null)
+                btn.setEnabled(false);
+            else
+                btn.setEnabled(true);
         },
 
         onDeleteRiferimentiPress: function(oEvent) {
@@ -132,8 +164,11 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
             this.getView().byId("table-riferimenti-row-mode").setRowCount(newData.length);
             if (newData.length === 0) {
                 this.getView().byId("panel-riferimenti").setVisible(false);
-                this.getView().byId("filtri-btn").setEnabled(true);
+                this.getView().byId("select-tipologia").setEnabled(true);
             }
+
+            // Rimuovere le selezioni dalla tabella riferimenti
+
         },
 
         onCerca: function() {
@@ -143,12 +178,8 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
                 'date1': this.getView().byId("filtri-date").getProperty("dateValue"),
                 'date2': this.getView().byId("filtri-date").getProperty("secondDateValue")
             };
-            console.log("SS")
-            if (aFilters.number.length == 0 && aFilters.customerNumber.length == 0 && aFilters.date1 == null && aFilters.date2 == null) {
-                MessageBox.warning("Popola almeno un filtro!", {title: "Attenzione"});
-                return;
-            }
             const initialData = sampleData.data;
+            const initialSelectedData = this.getView().getModel().getData().selectedData;
             let myDate;
             let newData = [];
             let numberFilteredData, customerNumberFilteredData, dateFilteredData;
@@ -178,9 +209,8 @@ function (Controller, JSONModel, DateFormat, MessageBox) {
                 newData = dateFilteredData;
             else
                 newData = sampleData.data;
-            this.getView().getModel().setData({'data': newData});
+            this.getView().getModel().setData({'data': newData, 'selectedData': initialSelectedData});
             this.getView().byId("table-odv-vbox").setVisible(true);
-            this.getView().byId("table-odv").clearSelection();
             this.getView().byId("table-odv-row-mode").setRowCount(newData.length || 1);
         }
     });
