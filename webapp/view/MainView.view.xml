@@ -16,6 +16,7 @@
                 </Select>
                 <!-- <core:Fragment fragmentName="poccsnov.view.OdvFragment" type="XML" /> -->
                 <mvc:XMLView id="odv-view" viewName="poccsnov.view.OdvView" visible="false" />
+                <mvc:XMLView id="doccon-view" viewName="poccsnov.view.DocconView" visible="false" />
             </VBox>
         </content>
     </Page>
