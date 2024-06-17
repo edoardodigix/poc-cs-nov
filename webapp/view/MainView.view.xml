@@ -17,40 +17,40 @@
                 
                 <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Seleziona documenti di riferimento" visible="false" class="sapUiSmallMarginBottom">
                     <content>
-                        <HBox id="filtri-hbox-ext" class="sapUiSmallMarginBottom">
-                            <HBox id="filtri-hbox-int" width="65%" justifyContent="Start">
-                                <VBox id="filtri-vbox-1" class="sapUiLargeMarginEnd">
-                                    <Label id="filtri-label-n-odv" text="N. OdV" />
-                                    <MultiComboBox
-                                        id="filtri-input-n-odv"
-                                        selectionFinish="onBoxFinish"
-                                        selectionChange="onInputChange"
-                                        >
-                                        <core:Item id="filtri-cbox-n-odv-item1" text="1030067869" />
-                                        <core:Item id="filtri-cbox-n-odv-item2" text="1030067875" />
-                                        <core:Item id="filtri-cbox-n-odv-item3" text="1030067906" />
-                                        <core:Item id="filtri-cbox-n-odv-item4" text="1030069545" />
-                                    </MultiComboBox>
-                                </VBox>
-                                <VBox id="filtri-vbox-2" class="sapUiLargeMarginEnd">
-                                    <Label id="filtri-label-n-oda" text="N. OdA Cliente" />
-                                    <MultiComboBox
-                                        id="filtri-input-n-oda"
-                                        selectionFinish="onBoxFinish"
-                                        selectionChange="onInputChange"
-                                        >
-                                        <core:Item id="filtri-cbox-n-oda-item1" text="230801 EF07D0 SFUSO 15/1" />
-                                        <core:Item id="filtri-cbox-n-oda-item2" text="230802 EF05B SFUSO 20/2 rev1 15/2" />
-                                        <core:Item id="filtri-cbox-n-oda-item3" text="230803 EF07D0 SFUSO 19/3" />
-                                        <core:Item id="filtri-cbox-n-oda-item4" text="240208 EF05B 11/4" />
-                                    </MultiComboBox>
-                                </VBox>
-                                <VBox id="filtri-vbox-3" class="sapUiLargeMarginEnd" width="17rem">
-                                    <Label id="filtri-label-data" text="Data OdV" />
-                                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onInputChange" />
-                                </VBox>
-                            </HBox>
-                            <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiLargeMarginEnd">
+                        <HBox id="filtri-hbox-int" justifyContent="SpaceBetween" class="sapUiSmallMarginBottom">
+                            <VBox id="filtri-vbox-1">
+                                <Label id="filtri-label-n-odv" text="N. OdV" />
+                                <MultiComboBox
+                                    id="filtri-input-n-odv"
+                                    selectionFinish="onBoxFinish"
+                                    selectionChange="onInputChange"
+                                    width="15rem"
+                                    >
+                                    <core:Item id="filtri-cbox-n-odv-item1" text="1030067869" />
+                                    <core:Item id="filtri-cbox-n-odv-item2" text="1030067875" />
+                                    <core:Item id="filtri-cbox-n-odv-item3" text="1030067906" />
+                                    <core:Item id="filtri-cbox-n-odv-item4" text="1030069545" />
+                                </MultiComboBox>
+                            </VBox>
+                            <VBox id="filtri-vbox-2">
+                                <Label id="filtri-label-n-oda" text="N. OdA Cliente" />
+                                <MultiComboBox
+                                    id="filtri-input-n-oda"
+                                    selectionFinish="onBoxFinish"
+                                    selectionChange="onInputChange"
+                                    width="20rem"
+                                    >
+                                    <core:Item id="filtri-cbox-n-oda-item1" text="230801 EF07D0 SFUSO 15/1" />
+                                    <core:Item id="filtri-cbox-n-oda-item2" text="230802 EF05B SFUSO 20/2 rev1 15/2" />
+                                    <core:Item id="filtri-cbox-n-oda-item3" text="230803 EF07D0 SFUSO 19/3" />
+                                    <core:Item id="filtri-cbox-n-oda-item4" text="240208 EF05B 11/4" />
+                                </MultiComboBox>
+                            </VBox>
+                            <VBox id="filtri-vbox-3">
+                                <Label id="filtri-label-data" text="Data OdV" />
+                                <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onInputChange" width="13rem"/>
+                            </VBox>
+                            <VBox id="filtri-vbox-4" justifyContent="End" class="sapUiMediumMarginBegin">
                                 <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" press="onCerca" enabled="false"/>
                             </VBox>
                         </HBox>
@@ -60,13 +60,13 @@
                                     <rowmodes:Fixed id="table-odv-row-mode"></rowmodes:Fixed>
                                 </t:rowMode>
                                 <t:columns>
-                                    <t:Column id="table-odv-number">
+                                    <t:Column id="table-odv-number" width="9rem">
                                         <Label id="table-odv-number-label" text="N. OdV" />
                                         <t:template>
                                             <Text id="table-odv-number-text" text="{number}" />
                                         </t:template>
                                     </t:Column>
-                                    <t:Column id="table-odv-date">
+                                    <t:Column id="table-odv-date" width="9rem">
                                         <Label id="table-odv-date-label" text="Data OdV" />
                                         <t:template>
                                             <Text id="table-odv-date-text" text="{date}" />
@@ -78,13 +78,13 @@
                                             <Text id="table-odv-customernumber-text" text="{customerNumber}" />
                                         </t:template>
                                     </t:Column>
-                                    <t:Column id="table-odv-price">
+                                    <t:Column id="table-odv-price" width="9rem">
                                         <Label id="table-odv-price-label" text="Valore" />
                                         <t:template>
                                             <Text id="table-odv-price-text" text="{price}" />
                                         </t:template>
                                     </t:Column>
-                                    <t:Column id="table-odv-status">
+                                    <t:Column id="table-odv-status" width="9rem">
                                         <Label id="table-odv-status-label" text="Stato" />
                                         <t:template>
                                             <Text id="table-odv-status-text" text="{status}" />
@@ -106,14 +106,14 @@
                                 <rowmodes:Fixed id="table-riferimenti-row-mode"></rowmodes:Fixed>
                             </t:rowMode>
                             <t:columns>
-                                <t:Column id="table-riferimenti-number">
+                                <t:Column id="table-riferimenti-number" width="9rem">
                                     <Label id="table-riferimenti-number-label" text="N. OdV" />
                                     <t:template>
                                         <Text id="table-riferimenti-number-text" text="{number}" />
                                     </t:template>
                                 </t:Column>
-                                <t:Column id="table-riferimenti-date">
-                                    <Label id="table-riferimenti-date-label" text="Date OdV" />
+                                <t:Column id="table-riferimenti-date" width="9rem">
+                                    <Label id="table-riferimenti-date-label" text="Data OdV" />
                                     <t:template>
                                         <Text id="table-riferimenti-date-text" text="{date}" />
                                     </t:template>
@@ -124,26 +124,24 @@
                                         <Text id="table-riferimenti-customernumber-text" text="{customerNumber}" />
                                     </t:template>
                                 </t:Column>
-                                <t:Column id="table-riferimenti-price">
+                                <t:Column id="table-riferimenti-price" width="9rem">
                                     <Label id="table-riferimenti-price-label" text="Valore" />
                                     <t:template>
                                         <Text id="table-riferimenti-price-text" text="{price}" />
                                     </t:template>
                                 </t:Column>
-                                <t:Column id="table-riferimenti-status">
+                                <t:Column id="table-riferimenti-status" width="9rem">
                                     <Label id="table-riferimenti-status-label" text="Stato" />
                                     <t:template>
                                         <Text id="table-riferimenti-status-text" text="{status}" />
                                     </t:template>
                                 </t:Column>
-                                <t:Column id="table-riferimenti-btn-delete" width="4rem" hAlign="Center">
+                                <t:Column id="table-riferimenti-btn-delete" width="6rem" hAlign="Center">
                                     <t:template>
-                                        <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" press="onDeleteRiferimentiPress"/>
-                                    </t:template>
-                                </t:Column>
-                                <t:Column id="table-riferimenti-btn-pdf" width="4rem" hAlign="Center">
-                                    <t:template>
-                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" type="Default" press="onOpenPdf" tooltip="Visualizza documento ODV_{number}.pdf"/>
+                                        <HBox id="table-btns-column" justifyContent="SpaceAround">
+                                            <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" press="onDeleteRiferimentiPress"/>
+                                            <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" type="Default" press="onOpenPdf" tooltip="Visualizza documento ODV_{number}.pdf"/>
+                                        </HBox>
                                     </t:template>
                                 </t:Column>
                             </t:columns>

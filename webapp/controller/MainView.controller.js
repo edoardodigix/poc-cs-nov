@@ -71,7 +71,7 @@ function (Controller, JSONModel, DateFormat) {
         onOpenPdf: function (oEvent) {
             const pdfViewer = new sap.m.PDFViewer();
             this.getView().addDependent(pdfViewer);
-            const odvNumber = oEvent.getSource().getParent().getCells()[0].getText();
+            const odvNumber = oEvent.getSource().getParent().getParent().getCells()[0].getText();
 
             const sSource = `./res/ODV_${odvNumber}.pdf`
             pdfViewer.setSource(sSource);
@@ -154,7 +154,7 @@ function (Controller, JSONModel, DateFormat) {
             const oModel = this.getView().getModel();
             const initialData = oModel.getData();
             let newData = initialData.selectedData;
-            const rowToRemove = oEvent.getSource().getParent().getCells()[0].getProperty("text");
+            const rowToRemove = oEvent.getSource().getParent().getParent().getCells()[0].getProperty("text");
             for (let i = 0; i < newData.length; ++i) {
                 if (initialData.selectedData[i].number === rowToRemove)
                 newData.splice(i, 1);
