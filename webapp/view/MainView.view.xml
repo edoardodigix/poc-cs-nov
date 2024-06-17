@@ -8,26 +8,42 @@
                 <Label id="label-tipologia" text="Tipologia riferimento" design="Bold" />
                 <Select id="select-tipologia" forceSelection="false" class="sapUiSmallMarginBottom" change="onSelectChange">
                     <items>
-                        <core:Item id="select-item-doc" text="Doc. di spedizione" />
-                        <core:Item id="select-item-doc-lotto" text="Doc. di spedizione - Lotto" />
-                        <core:Item id="select-item-doc-prodotto" text="Doc. di spedizione - Prodotto" />
-                        <core:Item id="select-item-lotto" text="Lotto" />
+                        <core:Item id="select-item-doc-consegna" text="Documento di consegna" />
+                        <core:Item id="select-item-doc-lotto" text="Documento spedizione lotto" />
+                        <core:Item id="select-item-doc-prodotto" text="Documento spedizione prodotto" />
                         <core:Item id="select-item-ordine" text="Ordine di vendita" />
-                        <core:Item id="select-item-prodotto" text="Prodotto" /> 
                     </items>
                 </Select>
                 
-                <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Filtri" visible="false" class="sapUiSmallMarginBottom">
+                <Panel id="panel-filtri" expandable="true" expanded="true" headerText="Seleziona documenti di riferimento" visible="false" class="sapUiSmallMarginBottom">
                     <content>
-                        <HBox id="filtri-hbox-ext">
+                        <HBox id="filtri-hbox-ext" class="sapUiSmallMarginBottom">
                             <HBox id="filtri-hbox-int" width="65%" justifyContent="Start">
                                 <VBox id="filtri-vbox-1" class="sapUiLargeMarginEnd">
                                     <Label id="filtri-label-n-odv" text="N. OdV" />
-                                    <Input id="filtri-input-n-odv" maxLength="10" liveChange="onInputChange" />
+                                    <MultiComboBox
+                                        id="filtri-input-n-odv"
+                                        selectionFinish="onBoxFinish"
+                                        selectionChange="onInputChange"
+                                        >
+                                        <core:Item id="filtri-cbox-n-odv-item1" text="1030067869" />
+                                        <core:Item id="filtri-cbox-n-odv-item2" text="1030067875" />
+                                        <core:Item id="filtri-cbox-n-odv-item3" text="1030067906" />
+                                        <core:Item id="filtri-cbox-n-odv-item4" text="1030069545" />
+                                    </MultiComboBox>
                                 </VBox>
                                 <VBox id="filtri-vbox-2" class="sapUiLargeMarginEnd">
                                     <Label id="filtri-label-n-oda" text="N. OdA Cliente" />
-                                    <Input id="filtri-input-n-oda" maxLength="10" liveChange="onInputChange" />
+                                    <MultiComboBox
+                                        id="filtri-input-n-oda"
+                                        selectionFinish="onBoxFinish"
+                                        selectionChange="onInputChange"
+                                        >
+                                        <core:Item id="filtri-cbox-n-oda-item1" text="230801 EF07D0 SFUSO 15/1" />
+                                        <core:Item id="filtri-cbox-n-oda-item2" text="230802 EF05B SFUSO 20/2 rev1 15/2" />
+                                        <core:Item id="filtri-cbox-n-oda-item3" text="230803 EF07D0 SFUSO 19/3" />
+                                        <core:Item id="filtri-cbox-n-oda-item4" text="240208 EF05B 11/4" />
+                                    </MultiComboBox>
                                 </VBox>
                                 <VBox id="filtri-vbox-3" class="sapUiLargeMarginEnd" width="17rem">
                                     <Label id="filtri-label-data" text="Data OdV" />
@@ -38,52 +54,52 @@
                                 <Button id="filtri-btn" icon="sap-icon://search" text="Cerca" press="onCerca" enabled="false"/>
                             </VBox>
                         </HBox>
+                        <VBox id="table-odv-vbox" visible="false" >
+                            <t:Table id="table-odv" rows="{/data}" class="sapUiSmallMarginBottom" rowSelectionChange="onSelectRow">
+                                <t:rowMode>
+                                    <rowmodes:Fixed id="table-odv-row-mode"></rowmodes:Fixed>
+                                </t:rowMode>
+                                <t:columns>
+                                    <t:Column id="table-odv-number">
+                                        <Label id="table-odv-number-label" text="N. OdV" />
+                                        <t:template>
+                                            <Text id="table-odv-number-text" text="{number}" />
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column id="table-odv-date">
+                                        <Label id="table-odv-date-label" text="Data OdV" />
+                                        <t:template>
+                                            <Text id="table-odv-date-text" text="{date}" />
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column id="table-odv-customernumber">
+                                        <Label id="table-odv-customernumber-label" text="N. OdA Cliente" />
+                                        <t:template>
+                                            <Text id="table-odv-customernumber-text" text="{customerNumber}" />
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column id="table-odv-price">
+                                        <Label id="table-odv-price-label" text="Valore" />
+                                        <t:template>
+                                            <Text id="table-odv-price-text" text="{price}" />
+                                        </t:template>
+                                    </t:Column>
+                                    <t:Column id="table-odv-status">
+                                        <Label id="table-odv-status-label" text="Stato" />
+                                        <t:template>
+                                            <Text id="table-odv-status-text" text="{status}" />
+                                        </t:template>
+                                    </t:Column>
+                                </t:columns>
+                            </t:Table>
+                            <HBox id="hbox-table-odv-btn" justifyContent="End">
+                                <Button id="table-odv-btn-reset" text="Reset" class="sapUiSmallMarginEnd" width="5rem" press="onReset" />
+                                <Button id="table-odv-btn-seleziona" text="Seleziona" width="5rem" type="Emphasized" enabled="false" press="onSelectButtonPress"/>
+                            </HBox>
+                        </VBox>
                     </content>
                 </Panel>
-                <VBox id="table-odv-vbox" visible="false" class="sapUiSmallMarginBottom">
-                    <t:Table id="table-odv" rows="{/data}" class="sapUiSmallMarginBottom" rowSelectionChange="onSelectRow">
-                        <t:rowMode>
-                            <rowmodes:Fixed id="table-odv-row-mode"></rowmodes:Fixed>
-                        </t:rowMode>
-                        <t:columns>
-                            <t:Column id="table-odv-number">
-                                <Label id="table-odv-number-label" text="N. OdV" />
-                                <t:template>
-                                    <Text id="table-odv-number-text" text="{number}" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column id="table-odv-date">
-                                <Label id="table-odv-date-label" text="Data OdV" />
-                                <t:template>
-                                    <Text id="table-odv-date-text" text="{date}" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column id="table-odv-customernumber">
-                                <Label id="table-odv-customernumber-label" text="N. OdA Cliente" />
-                                <t:template>
-                                    <Text id="table-odv-customernumber-text" text="{customerNumber}" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column id="table-odv-price">
-                                <Label id="table-odv-price-label" text="Valore" />
-                                <t:template>
-                                    <Text id="table-odv-price-text" text="{price}" />
-                                </t:template>
-                            </t:Column>
-                            <t:Column id="table-odv-status">
-                                <Label id="table-odv-status-label" text="Stato" />
-                                <t:template>
-                                    <Text id="table-odv-status-text" text="{status}" />
-                                </t:template>
-                            </t:Column>
-                        </t:columns>
-                    </t:Table>
-                    <HBox id="hbox-table-odv-btn" justifyContent="End">
-                        <Button id="table-odv-btn-reset" text="Reset" class="sapUiSmallMarginEnd" width="5rem" press="onReset" />
-                        <Button id="table-odv-btn-seleziona" text="Seleziona" width="5rem" type="Emphasized" enabled="false" press="onSelectButtonPress"/>
-                    </HBox>
-                </VBox>
-                <Panel id="panel-riferimenti" expandable="true" expanded="true" headerText="Riferimenti" visible="false">
+                <Panel id="panel-riferimenti" expandable="true" expanded="true" headerText="Documenti di riferimento" visible="false">
                     <content>
                         <t:Table id="table-riferimenti" rows="{/selectedData}" selectionMode="None" class="sapUiMediumMarginBottom">
                             <t:rowMode>
@@ -127,7 +143,7 @@
                                 </t:Column>
                                 <t:Column id="table-riferimenti-btn-pdf" width="4rem" hAlign="Center">
                                     <t:template>
-                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" type="Default" press="onOpenPdf" tooltip="Visualizza documento"/>
+                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" type="Default" press="onOpenPdf" tooltip="Visualizza documento ODV_{number}.pdf"/>
                                     </t:template>
                                 </t:Column>
                             </t:columns>

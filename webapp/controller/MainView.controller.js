@@ -12,32 +12,32 @@ function (Controller, JSONModel, DateFormat) {
         'data': 
             [
                 {
-                    'number': '1030065784',
-                    'date': oDateFormat.format(new Date('2024-05-19T00:00:00.000Z')),
-                    'customerNumber': '4500112408',
-                    'price': '65.500 €',
-                    'status': 'Concluso' 
+                    'number': '1030067869',
+                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+                    'customerNumber': '230801 EF07D0 SFUSO 15/1',
+                    'price': '47.952 €',
+                    'status': 'Concluso'
                 },
                 {
-                    'number': '1030063114',
-                    'date': oDateFormat.format(new Date('2024-03-18T00:00:00.000Z')),
-                    'customerNumber': '4500117678',
-                    'price': '80.000 €',
-                    'status': 'Concluso' 
+                    'number': '1030067875',
+                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+                    'customerNumber': '230802 EF05B SFUSO 20/2 rev1 15/2',
+                    'price': '50.505 €',
+                    'status': 'Concluso'
                 },
                 {
-                    'number': '1030066144',
-                    'date': oDateFormat.format(new Date('2024-02-06T00:00:00.000Z')),
-                    'customerNumber': '4500110017',
-                    'price': '74.414 €',
-                    'status': 'Concluso' 
+                    'number': '1030067906',
+                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+                    'customerNumber': '230803 EF07D0 SFUSO 19/3',
+                    'price': '49.176 €',
+                    'status': 'Concluso'
                 },
                 {
-                    'number': '1030066277',
-                    'date': oDateFormat.format(new Date('2024-04-12T00:00:00.000Z')),
-                    'customerNumber': '4500110263',
-                    'price': '73.476 €',
-                    'status': 'Concluso' 
+                    'number': '1030069545',
+                    'date': oDateFormat.format(new Date('2024-03-21T00:00:00.000Z')),
+                    'customerNumber': '240208 EF05B 11/4',
+                    'price': '49.920 €',
+                    'status': 'Concluso'
                 }
             ],
         'selectedData': []
@@ -68,24 +68,25 @@ function (Controller, JSONModel, DateFormat) {
             }
         },
 
-        onOpenPdf: function () {
+        onOpenPdf: function (oEvent) {
             const pdfViewer = new sap.m.PDFViewer();
             this.getView().addDependent(pdfViewer);
+            const odvNumber = oEvent.getSource().getParent().getCells()[0].getText();
 
-            const sSource ="./res/sample-document.pdf";
+            const sSource = `./res/ODV_${odvNumber}.pdf`
             pdfViewer.setSource(sSource);
             pdfViewer.setTitle("My Custom Title");
             pdfViewer.open();
         },
 
         onReset: function () {
-            this.getView().byId("filtri-input-n-odv").setValue('');
-            this.getView().byId("filtri-input-n-oda").setValue('');
+            this.getView().byId("filtri-input-n-odv").removeAllSelectedItems();
+            this.getView().byId("filtri-input-n-oda").removeAllSelectedItems();
             this.getView().byId("filtri-date").setDateValue(null);
             this.getView().byId("filtri-date").setSecondDateValue(null);
 
             this.getView().byId("table-odv-vbox").setVisible(false);
-            this.getView().byId("filtri-btn").setEnabled(true);
+            this.getView().byId("filtri-btn").setEnabled(false);
 
         },
 
@@ -143,7 +144,7 @@ function (Controller, JSONModel, DateFormat) {
             const input2 = this.getView().byId("filtri-input-n-oda");
             const inputData = this.getView().byId("filtri-date");
             const btn = this.getView().byId("filtri-btn");
-            if (input1.getValue() == '' && input2.getValue() == '' && inputData.getDateValue() == null)
+            if (input1.getSelectedItems().length == 0 && input2.getSelectedItems().length == 0 && inputData.getDateValue() == null)
                 btn.setEnabled(false);
             else
                 btn.setEnabled(true);
@@ -172,11 +173,14 @@ function (Controller, JSONModel, DateFormat) {
         },
 
         onCerca: function() {
+            const input1 = this.getView().byId("filtri-input-n-odv");
+            const input2 = this.getView().byId("filtri-input-n-oda");
+            const inputData = this.getView().byId("filtri-date");
             const aFilters = {
-                'number': this.getView().byId("filtri-input-n-odv").getProperty('value'),
-                'customerNumber': this.getView().byId("filtri-input-n-oda").getProperty('value'),
-                'date1': this.getView().byId("filtri-date").getProperty("dateValue"),
-                'date2': this.getView().byId("filtri-date").getProperty("secondDateValue")
+                'number': input1.getSelectedItems().length > 0 ? (function () {const result = []; input1.getSelectedItems().forEach(input => result.push(input.getText())); return result;})() : ['1030067869', '1030067875', '1030067906', '1030069545'],
+                'customerNumber': input2.getSelectedItems().length > 0 ? (function () {const result = []; input2.getSelectedItems().forEach(input => result.push(input.getText())); return result;})() : ['230801 EF07D0 SFUSO 15/1', '230802 EF05B SFUSO 20/2 rev1 15/2', '230803 EF07D0 SFUSO 19/3', '240208 EF05B 11/4'],
+                'date1': inputData.getProperty("dateValue"),
+                'date2': inputData.getProperty("secondDateValue")
             };
             const initialData = sampleData.data;
             const initialSelectedData = this.getView().getModel().getData().selectedData;
@@ -184,9 +188,9 @@ function (Controller, JSONModel, DateFormat) {
             let newData = [];
             let numberFilteredData, customerNumberFilteredData, dateFilteredData;
             if (!aFilters.number == false)
-                numberFilteredData = initialData.filter((row) => row.number == aFilters.number);
+                numberFilteredData = initialData.filter((row) => aFilters.number.includes(row.number));
             if (!aFilters.customerNumber == false)
-                customerNumberFilteredData = initialData.filter((row) => row.customerNumber == aFilters.customerNumber);
+                customerNumberFilteredData = initialData.filter((row) => aFilters.customerNumber.includes(row.customerNumber));
             if (!aFilters.date1 == false) {
                 dateFilteredData = initialData.filter((row) => {
                     myDate = (new Date(row.date.split('/')[2]+'-'+row.date.split('/')[1]+'-'+row.date.split('/')[0])).getTime();
