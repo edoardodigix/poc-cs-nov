@@ -13,28 +13,28 @@ function (Controller, JSONModel, DateFormat) {
             [
                 {
                     'number': '1030065784',
-                    'date': oDateFormat.format(new Date('2023-09-19T00:00:00.000Z')),
+                    'date': oDateFormat.format(new Date('2024-05-19T00:00:00.000Z')),
                     'customerNumber': '4500112408',
                     'price': '65.500 €',
                     'status': 'Concluso' 
                 },
                 {
                     'number': '1030063114',
-                    'date': oDateFormat.format(new Date('2023-04-18T00:00:00.000Z')),
+                    'date': oDateFormat.format(new Date('2024-03-18T00:00:00.000Z')),
                     'customerNumber': '4500117678',
                     'price': '80.000 €',
                     'status': 'Concluso' 
                 },
                 {
                     'number': '1030066144',
-                    'date': oDateFormat.format(new Date('2023-10-06T00:00:00.000Z')),
+                    'date': oDateFormat.format(new Date('2024-02-06T00:00:00.000Z')),
                     'customerNumber': '4500110017',
                     'price': '74.414 €',
                     'status': 'Concluso' 
                 },
                 {
                     'number': '1030066277',
-                    'date': oDateFormat.format(new Date('2023-10-12T00:00:00.000Z')),
+                    'date': oDateFormat.format(new Date('2024-04-12T00:00:00.000Z')),
                     'customerNumber': '4500110263',
                     'price': '73.476 €',
                     'status': 'Concluso' 

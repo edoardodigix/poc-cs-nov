@@ -53,7 +53,7 @@
                                 </t:template>
                             </t:Column>
                             <t:Column id="table-odv-date">
-                                <Label id="table-odv-date-label" text="Date OdV" />
+                                <Label id="table-odv-date-label" text="Data OdV" />
                                 <t:template>
                                     <Text id="table-odv-date-text" text="{date}" />
                                 </t:template>
@@ -125,9 +125,9 @@
                                         <Button id="table-riferimenti-delete-btn" icon="sap-icon://delete" press="onDeleteRiferimentiPress"/>
                                     </t:template>
                                 </t:Column>
-                                <t:Column id="table-riferimenti-btn-pdf" width="6rem" hAlign="Center">
+                                <t:Column id="table-riferimenti-btn-pdf" width="4rem" hAlign="Center">
                                     <t:template>
-                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" text= "PDF" type="Default" press="onOpenPdf"/>
+                                        <Button id="table-riferimenti-pdf-btn" icon="sap-icon://inspection" type="Default" press="onOpenPdf" tooltip="Visualizza documento"/>
                                     </t:template>
                                 </t:Column>
                             </t:columns>
