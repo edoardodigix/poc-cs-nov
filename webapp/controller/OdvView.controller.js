@@ -43,7 +43,7 @@ function (Controller, JSONModel, DateFormat) {
         'selectedData': []
     };
 
-    return Controller.extend("poccsnov.controller.MainView", {
+    return Controller.extend("poccsnov.controller.OdvView", {
         
         onInit: function () {
             const oJSONModel = new JSONModel(sampleData);

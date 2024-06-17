@@ -78,20 +78,20 @@
       },
       "routes": [
         {
-          "name": "RouteMainView",
+          "name": "RouteOdvView",
           "pattern": ":?query:",
           "target": [
-            "TargetMainView"
+            "TargetOdvView"
           ]
         }
       ],
       "targets": {
-        "TargetMainView": {
+        "TargetOdvView": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
-          "viewId": "MainView",
-          "viewName": "MainView"
+          "viewId": "OdvView",
+          "viewName": "OdvView"
         }
       }
     },
