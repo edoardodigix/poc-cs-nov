@@ -6,66 +6,71 @@ sap.ui.define([
 function (Controller, JSONModel, DateFormat) {
     "use strict";
 
-    const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true});
+    const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true}); 
 
-    const sampleData = {
-        'data': 
-            [
-                {
-                    'number': '1030067869',
-                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-                    'customerNumber': '230801 EF07D0 SFUSO 15/1',
-                    'price': '47.952 €',
-                    'status': 'Concluso'
-                },
-                {
-                    'number': '1030067875',
-                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-                    'customerNumber': '230802 EF05B SFUSO 20/2 rev1 15/2',
-                    'price': '50.505 €',
-                    'status': 'Concluso'
-                },
-                {
-                    'number': '1030067906',
-                    'date': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-                    'customerNumber': '230803 EF07D0 SFUSO 19/3',
-                    'price': '49.176 €',
-                    'status': 'Concluso'
-                },
-                {
-                    'number': '1030069545',
-                    'date': oDateFormat.format(new Date('2024-03-21T00:00:00.000Z')),
-                    'customerNumber': '240208 EF05B 11/4',
-                    'price': '49.920 €',
-                    'status': 'Concluso'
-                }
-            ],
-        'selectedData': []
-    };
+    // const sampleData = {
+    //     'data': 
+    //         [
+    //             {
+    //                 'numberODV': '1030067869',
+    //                 'deliveryNumber': '1500088405',
+    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
+    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
+    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+    //                 'dateUM': oDateFormat.format(new Date('2024-01-12T00:00:00.000Z')), 
+    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
+    //                 'luogoSped' : 'SZ01 - GUIDO BERNARDINI SRL',
+    //                 'no_packages' : '0',
+    //                 'status': 'Concluso'
+    //             },
+    //             {
+    //                 'numberODV': '1030067875',
+    //                 'deliveryNumber': '1500089304',
+    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
+    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
+    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+    //                 'dateUM': oDateFormat.format(new Date('2024-02-16T00:00:00.000Z')),
+    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
+    //                 'luogoSped' : 'SP04 - PATRICA',
+    //                 'no_packages' : '0',
+    //                 'status': 'Concluso'
+    //             },
+    //             {
+    //                 'numberODV': '1030067906',
+    //                 'deliveryNumber': '1500090029',
+    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
+    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
+    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
+    //                 'dateUM': oDateFormat.format(new Date('2024-03-18T00:00:00.000Z')),
+    //                 'trasportatore' : 'CIANFROCCA TRASPORTI',
+    //                 'luogoSped' : 'SZ15 - TECNOFER',
+    //                 'no_packages' : '0',
+    //                 'status': 'Concluso'
+    //             },
+    //             {
+    //                 'numberODV': '1030069545',
+    //                 'deliveryNumber': '1500090528',
+    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
+    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
+    //                 'dateODV': oDateFormat.format(new Date('2024-03-21T00:00:00.000Z')),
+    //                 'dateUM': oDateFormat.format(new Date('2024-04-08T00:00:00.000Z')),
+    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
+    //                 'luogoSped' : 'SP04 - PATRICA',
+    //                 'no_packages' : '0',
+    //                 'status': 'Concluso'
+    //             }
+    //         ],
+    //     'selectedData': []
+    // };
 
     return Controller.extend("poccsnov.controller.DocconView", {
         
         onInit: function () {
-            const oJSONModel = new JSONModel(sampleData);
-
-            this.getView().byId("table-odv-row-mode").setRowCount(oJSONModel.getData().data.length);
+            const oJSONModel = new JSONModel();
+            oJSONModel.loadData(sap.ui.require.toUrl("poccsnov/data/docConsModel.json"));
+  
+            // this.getView().byId("table-odv-row-mode").setRowCount(oJSONModel.getData().data.length);
             this.getView().setModel(oJSONModel);
-        },
-
-        onSelectChange: function (oEvent) {
-            const oPanel = this.getView().byId("panel-filtri");
-            const oTable = this.getView().byId("table-odv-vbox");
-
-            if (oEvent.getParameter("selectedItem").getProperty("text") == 'Ordine di vendita') {
-                oPanel.setVisible(true);
-                this.getView().byId("table-odv").clearSelection();
-            }
-            else { 
-                oPanel.setVisible(false);
-                oTable.setVisible(false);
-                this.getView().byId("panel-riferimenti").setVisible(false);
-                this.getView().byId("filtri-btn").setEnabled(true);
-            }
         },
 
         onOpenPdf: function (oEvent) {
@@ -80,12 +85,16 @@ function (Controller, JSONModel, DateFormat) {
         },
 
         onReset: function () {
-            this.getView().byId("filtri-input-n-odv").removeAllSelectedItems();
-            this.getView().byId("filtri-input-n-oda").removeAllSelectedItems();
+            this.getView().byId("filtri-input-n-del").removeAllSelectedItems();
+            this.getView().byId("filtri-input-n-del").removeAllSelectedItems();
             this.getView().byId("filtri-date").setDateValue(null);
             this.getView().byId("filtri-date").setSecondDateValue(null);
+            this.getView().byId("filtri-date-um").setDateValue(null);
+            this.getView().byId("filtri-date-um").setSecondDateValue(null);
+            this.getView().byId("filtri-input-status").removeAllSelectedItems();
+            this.getView().byId("filtri-input-luogo-sped").removeAllSelectedItems();
 
-            this.getView().byId("table-odv-vbox").setVisible(false);
+            //this.getView().byId("table-odv-vbox").setVisible(false);
             this.getView().byId("filtri-btn").setEnabled(false);
 
         },
@@ -108,11 +117,16 @@ function (Controller, JSONModel, DateFormat) {
 
             aIndices.forEach((index) => {
                 newRowCells = aRows.at(index).getCells();
-                newData.number = newRowCells[0].getProperty("text");
-                newData.date = newRowCells[1].getProperty("text");
-                newData.customerNumber = newRowCells[2].getProperty("text");
-                newData.price = newRowCells[3].getProperty("text");
-                newData.status = newRowCells[4].getProperty("text");
+                newData.numberODV = newRowCells[0].getProperty("text");
+                newData.deliveryNumber = newRowCells[1].getProperty("text");
+                newData.destinatarioMerci = newRowCells[2].getProperty("text");
+                newData.indirizzoDest = newRowCells[3].getProperty("text");
+                newData.dateODV = newRowCells[4].getProperty("text");
+                newData.dateUM = newRowCells[5].getProperty("text");
+                newData.no_packages = newRowCells[6].getProperty("text");
+                newData.trasportatore = newRowCells[7].getProperty("text"); 
+                newData.luogoSped = newRowCells[8].getProperty("text");
+                newData.status = newRowCells[9].getProperty("text");
 
                 // Check se il dato è già presente tra i selectedData
                 if (selectedData.length == 0)
@@ -120,7 +134,7 @@ function (Controller, JSONModel, DateFormat) {
                 else {
                     let count = 0;
                     selectedData.forEach((data) => {
-                        if (newData.number != data.number)
+                        if (newData.numberODV != data.numberODV)
                             ++count;
                     });
                     if (count == selectedData.length)
@@ -143,14 +157,16 @@ function (Controller, JSONModel, DateFormat) {
         },
 
         onInputChange: function () {
-            const input1 = this.getView().byId("filtri-input-n-odv");
-            const input2 = this.getView().byId("filtri-input-n-oda");
-            const inputData = this.getView().byId("filtri-date");
-            const btn = this.getView().byId("filtri-btn");
-            if (input1.getSelectedItems().length == 0 && input2.getSelectedItems().length == 0 && inputData.getDateValue() == null)
-                btn.setEnabled(false);
-            else
-                btn.setEnabled(true);
+            console.log('STOP');
+            // const input2 = this.getView().byId("filtri-input-n-del");
+            // const inputDataODV = this.getView().byId("filtri-date-um");
+            // const inputDataUM = this.getView().byId("filtri-date");
+            // const btn = this.getView().byId("filtri-btn"); 
+            // if (input1.getSelectedItems().length == 0 && input2.getSelectedItems().length == 0 && inputDataODV.getDateValue() == null)
+            //     btn.setEnabled(false);
+            // else
+            //     btn.setEnabled(true);
+            
         },
 
         onDeleteRiferimentiPress: function(oEvent) {
@@ -159,7 +175,7 @@ function (Controller, JSONModel, DateFormat) {
             let newData = initialData.selectedData;
             const rowToRemove = oEvent.getSource().getParent().getParent().getCells()[0].getProperty("text");
             for (let i = 0; i < newData.length; ++i) {
-                if (initialData.selectedData[i].number === rowToRemove)
+                if (initialData.selectedData[i].numberODV === rowToRemove)
                 newData.splice(i, 1);
             }
             sampleData.selectedData = newData;
@@ -177,7 +193,7 @@ function (Controller, JSONModel, DateFormat) {
 
         onCerca: function() {
             const input1 = this.getView().byId("filtri-input-n-odv");
-            const input2 = this.getView().byId("filtri-input-n-oda");
+            const input2 = this.getView().byId("filtri-input-n-del"); 
             const inputData = this.getView().byId("filtri-date");
             const aFilters = {
                 'number': input1.getSelectedItems().length > 0 ? (function () {const result = []; input1.getSelectedItems().forEach(input => result.push(input.getText())); return result;})() : ['1030067869', '1030067875', '1030067906', '1030069545'],

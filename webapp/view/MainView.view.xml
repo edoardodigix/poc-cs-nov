@@ -8,10 +8,10 @@
                 <Label id="label-tipologia" text="Tipologia riferimento" design="Bold" />
                 <Select id="select-tipologia" forceSelection="false" class="sapUiSmallMarginBottom" change="onSelectChange">
                     <items>
+                        <core:Item id="select-item-ordine" text="Ordine di vendita" />
                         <core:Item id="select-item-doc-consegna" text="Documento di consegna" />
                         <core:Item id="select-item-doc-lotto" text="Documento spedizione lotto" />
                         <core:Item id="select-item-doc-prodotto" text="Documento spedizione prodotto" />
-                        <core:Item id="select-item-ordine" text="Ordine di vendita" />
                     </items>
                 </Select>
                 <!-- <core:Fragment fragmentName="poccsnov.view.OdvFragment" type="XML" /> -->
