@@ -7,62 +7,6 @@ function (Controller, JSONModel, DateFormat) {
     "use strict";
 
     const oDateFormat = DateFormat.getDateInstance({pattern: "dd/MM/yyyy", UTC: true}); 
-
-    // const sampleData = {
-    //     'data': 
-    //         [
-    //             {
-    //                 'numberODV': '1030067869',
-    //                 'deliveryNumber': '1500088405',
-    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
-    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
-    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-    //                 'dateUM': oDateFormat.format(new Date('2024-01-12T00:00:00.000Z')), 
-    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
-    //                 'luogoSped' : 'SZ01 - GUIDO BERNARDINI SRL',
-    //                 'no_packages' : '0',
-    //                 'status': 'Concluso'
-    //             },
-    //             {
-    //                 'numberODV': '1030067875',
-    //                 'deliveryNumber': '1500089304',
-    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
-    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
-    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-    //                 'dateUM': oDateFormat.format(new Date('2024-02-16T00:00:00.000Z')),
-    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
-    //                 'luogoSped' : 'SP04 - PATRICA',
-    //                 'no_packages' : '0',
-    //                 'status': 'Concluso'
-    //             },
-    //             {
-    //                 'numberODV': '1030067906',
-    //                 'deliveryNumber': '1500090029',
-    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
-    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
-    //                 'dateODV': oDateFormat.format(new Date('2024-01-08T00:00:00.000Z')),
-    //                 'dateUM': oDateFormat.format(new Date('2024-03-18T00:00:00.000Z')),
-    //                 'trasportatore' : 'CIANFROCCA TRASPORTI',
-    //                 'luogoSped' : 'SZ15 - TECNOFER',
-    //                 'no_packages' : '0',
-    //                 'status': 'Concluso'
-    //             },
-    //             {
-    //                 'numberODV': '1030069545',
-    //                 'deliveryNumber': '1500090528',
-    //                 'destinatarioMerci': 'CEPLAST S.P.A.',
-    //                 'indirizzoDest': 'STRADA DELLE CAMPORE 23/I/05100 TERNI',
-    //                 'dateODV': oDateFormat.format(new Date('2024-03-21T00:00:00.000Z')),
-    //                 'dateUM': oDateFormat.format(new Date('2024-04-08T00:00:00.000Z')),
-    //                 'trasportatore' : 'GUIDO BERNARDINI SRL',
-    //                 'luogoSped' : 'SP04 - PATRICA',
-    //                 'no_packages' : '0',
-    //                 'status': 'Concluso'
-    //             }
-    //         ],
-    //     'selectedData': []
-    // };
-
     return Controller.extend("poccsnov.controller.DocconView", {
         
         onInit: function () {
@@ -85,17 +29,27 @@ function (Controller, JSONModel, DateFormat) {
         },
 
         onReset: function () {
-            this.getView().byId("filtri-input-n-del").removeAllSelectedItems();
-            this.getView().byId("filtri-input-n-del").removeAllSelectedItems();
-            this.getView().byId("filtri-date").setDateValue(null);
-            this.getView().byId("filtri-date").setSecondDateValue(null);
-            this.getView().byId("filtri-date-um").setDateValue(null);
-            this.getView().byId("filtri-date-um").setSecondDateValue(null);
-            this.getView().byId("filtri-input-status").removeAllSelectedItems();
-            this.getView().byId("filtri-input-luogo-sped").removeAllSelectedItems();
+            console.log("STOP");
+            const filterInputs = this.getView().getControlsByFieldGroupId("filtri-input").filter(c => c.isA("sap.m.MultiComboBox") || c.isA ("sap.m.DateRangeSelection"));
+            let mulComInputs = [] ;
+            let dateInputs = [];
+            filterInputs.forEach((input)=> {
+                if (input.isA("sap.m.MultiComboBox") == true){
+                    mulComInputs.push(input);
+                } else if (input.isA("sap.m.DateRangeSelection") == true) {
+                    dateInputs.push(input);
+                }
+            });
+            mulComInputs.forEach((input)=> {
+                input.removeAllSelectedItems();
+            })
 
-            //this.getView().byId("table-odv-vbox").setVisible(false);
+            dateInputs.forEach((dateRange) => {
+                dateRange.setDateValue(null);
+                dateRange.setSecondDateValue(null);
+            })
             this.getView().byId("filtri-btn").setEnabled(false);
+            // this.getView().byId('table-odv');
 
         },
 
@@ -105,7 +59,7 @@ function (Controller, JSONModel, DateFormat) {
             if (aIndices.length > 0)
                 oSelectButton.setEnabled(true);
             else
-            oSelectButton.setEnabled(false);
+                oSelectButton.setEnabled(false);
         },
 
         onSelectButtonPress: function() {
@@ -157,16 +111,24 @@ function (Controller, JSONModel, DateFormat) {
         },
 
         onInputChange: function () {
-            console.log('STOP');
-            // const input2 = this.getView().byId("filtri-input-n-del");
-            // const inputDataODV = this.getView().byId("filtri-date-um");
-            // const inputDataUM = this.getView().byId("filtri-date");
-            // const btn = this.getView().byId("filtri-btn"); 
-            // if (input1.getSelectedItems().length == 0 && input2.getSelectedItems().length == 0 && inputDataODV.getDateValue() == null)
-            //     btn.setEnabled(false);
-            // else
-            //     btn.setEnabled(true);
-            
+            // Resa la funzione standard per qualsiasi numero di input che abbiamo 
+            const filterInputs = this.getView().getControlsByFieldGroupId("filtri-input").filter(c => c.isA("sap.m.MultiComboBox") || c.isA ("sap.m.DateRangeSelection"));
+            const btn = this.getView().byId("filtri-btn");
+            let mulComInputs = [] ;
+            let dateInputs = [];
+            filterInputs.forEach((input)=> {
+                if (input.isA("sap.m.MultiComboBox") == true){
+                    mulComInputs.push(input);
+                } else if (input.isA("sap.m.DateRangeSelection") == true) {
+                    dateInputs.push(input);
+                }
+            });
+            let selectedCombos = mulComInputs.filter((input) => input.getSelectedItems().length > 0);
+            let selectedDates = dateInputs.filter((dateRange) => dateRange.getDateValue() !== null);
+            if(selectedCombos.length == 0 && selectedDates.length == 0)
+                btn.setEnabled(false);
+            else
+                btn.setEnabled(true);
         },
 
         onDeleteRiferimentiPress: function(oEvent) {
@@ -178,8 +140,8 @@ function (Controller, JSONModel, DateFormat) {
                 if (initialData.selectedData[i].numberODV === rowToRemove)
                 newData.splice(i, 1);
             }
-            sampleData.selectedData = newData;
-            const beforeData = this.getView().getModel().getData().selectedData;
+            initialData.selectedData = newData;
+            const beforeData = initialData.selectedData;
             this.getView().getModel().setData({'data': initialData.data, 'selectedData': beforeData});
             this.getView().byId("table-riferimenti-row-mode").setRowCount(newData.length);
             if (newData.length === 0) {

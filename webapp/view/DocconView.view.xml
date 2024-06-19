@@ -25,7 +25,7 @@
                 </VBox>
                 <VBox id="filtri-vbox-5" class="sapUiSmallMarginBottom">
                     <Label id="filtri-label-data-um" text="Data UM" />
-                    <DateRangeSelection id="filtri-date-um" placeholder=" " displayFormat="dd/MM/yyyy" change="onInputChange" width="13rem" />
+                    <DateRangeSelection id="filtri-date-um" placeholder=" " displayFormat="dd/MM/yyyy" fieldGroupIds="filtri-input" change="onInputChange" width="13rem" />
                 </VBox>
                 <VBox id="filtri-vbox-1" class="sapUiSmallMarginBottom">
                     <Label id="filtri-label-n-odv" text="N. OdV" />
@@ -45,7 +45,7 @@
                 </VBox>
                 <VBox id="filtri-vbox-3" class="sapUiSmallMarginBottom">
                     <Label id="filtri-label-data" text="Data OdV" />
-                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" change="onInputChange" width="13rem" />
+                    <DateRangeSelection id="filtri-date" placeholder=" " displayFormat="dd/MM/yyyy" fieldGroupIds="filtri-input" change="onInputChange" width="13rem" />
                 </VBox>
                 <VBox id="filtri-vbox-6" class="sapUiSmallMarginBottom">
                     <Label id="filtri-label-status" text="Stato UM" />
